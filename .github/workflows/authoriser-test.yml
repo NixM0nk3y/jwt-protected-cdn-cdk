@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+name: CI End-to-End Test
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+on:
+  push:
+    branches: [main]
+    paths:
+      - "resources/edge-authoriser/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "resources/edge-authoriser/**"
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ci-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./resources/edge-authoriser
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Pin nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: ./resources/edge-authoriser/package-lock.json
+
+      - name: Install Packages
+        run: npm ci
+
+      - name: ESlint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
