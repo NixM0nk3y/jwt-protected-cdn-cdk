@@ -14,10 +14,20 @@ import {
     CacheHeaderBehavior,
     experimental,
     ViewerProtocolPolicy,
+    CachedMethods,
+    ResponseHeadersPolicy,
+    OriginRequestPolicy,
 } from "aws-cdk-lib/aws-cloudfront";
 import { Runtime, Code } from "aws-cdk-lib/aws-lambda";
 import { S3Origin } from "aws-cdk-lib/aws-cloudfront-origins";
-import { Bucket, BlockPublicAccess, BucketEncryption, ObjectOwnership, BucketAccessControl } from "aws-cdk-lib/aws-s3";
+import {
+    Bucket,
+    BlockPublicAccess,
+    BucketEncryption,
+    ObjectOwnership,
+    BucketAccessControl,
+    HttpMethods,
+} from "aws-cdk-lib/aws-s3";
 
 export interface ProtectedCDNProps {
     readonly tenant: string;
@@ -37,6 +47,15 @@ export class ProtectedCDN extends Construct {
             encryption: BucketEncryption.S3_MANAGED,
             enforceSSL: true,
             removalPolicy: RemovalPolicy.DESTROY,
+            cors: [
+                {
+                    allowedMethods: [HttpMethods.GET, HttpMethods.HEAD],
+                    allowedOrigins: ["*"], // can be much better
+                    allowedHeaders: ["*"], // can be much better
+                    exposedHeaders: ["Access-Control-Allow-Origin"],
+                    maxAge: 300,
+                },
+            ],
         });
 
         const loggingBucket = new Bucket(this, "LoggingBucket", {
@@ -92,8 +111,10 @@ export class ProtectedCDN extends Construct {
         const cf = new Distribution(this, "Distribution", {
             defaultBehavior: {
                 origin: new S3Origin(contentBucket),
-                allowedMethods: AllowedMethods.ALLOW_ALL,
-                cachedMethods: AllowedMethods.ALLOW_GET_HEAD,
+                allowedMethods: AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                responseHeadersPolicy: ResponseHeadersPolicy.CORS_ALLOW_ALL_ORIGINS_WITH_PREFLIGHT_AND_SECURITY_HEADERS,
+                originRequestPolicy: OriginRequestPolicy.CORS_S3_ORIGIN,
+                cachedMethods: CachedMethods.CACHE_GET_HEAD_OPTIONS,
                 cachePolicy: staticAssetCachePolicy,
                 viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 edgeLambdas: [

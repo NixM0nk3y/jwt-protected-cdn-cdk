@@ -18,6 +18,11 @@ class Lambda implements LambdaInterface {
             return versionResponse();
         }
 
+        // bypass auth for OPTIONS / cors request and rely on origin controls
+        if (config().ENABLE_CORS_PASSTHROUGH && request.method == "OPTIONS") {
+            return request;
+        }
+
         // do we try to authorise the request?
         if (config().AUTH_ENABLED) {
             return authoriseRequest(request);

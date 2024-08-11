@@ -5,6 +5,7 @@ const schema = Type.Object({
     AUTH_ENABLED: Type.Boolean({ default: true }),
     AUTH_GRACE: Type.Number({ default: 10 }),
     DEBUG: Type.Boolean({ default: true }),
+    ENABLE_CORS_PASSTHROUGH: Type.Boolean({ default: true }),
     ISSUER: Type.String({ default: "https://example.com" }),
     AUDIENCE: Type.Array(Type.String(), { default: ["1234", "5678"], separator: "," }),
     JWKS_URI: Type.String({ default: "https://example.com/path/to/jwks.json" }),

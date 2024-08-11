@@ -12,6 +12,7 @@ import {
 
 import versionevent from "./events/versionrequest.json";
 import rootevent from "./events/rootrequest.json";
+import optionsevent from "./events/rootoptions.json";
 
 import versiondata from "../src/version.json";
 
@@ -54,13 +55,22 @@ describe("Lambda Routing", () => {
     describe("Auth Tests", () => {
         const auth_enable = true;
 
-        test("handler with / endpoint no auth", async () => {
+        test("handler with / endpoint auth", async () => {
             initApp(auth_enable);
             const e: CloudFrontRequestEvent = rootevent as CloudFrontRequestEvent;
 
             const result = await lambdaHandler(e, context);
             expect(result).toBeDefined();
             expect((result as CloudFrontResponseBody).status).toBe("401");
+        });
+
+        test("handler with OPTIONs / with auth", async () => {
+            initApp(auth_enable);
+            const e: CloudFrontRequestEvent = optionsevent as CloudFrontRequestEvent;
+
+            const result = await lambdaHandler(e, context);
+            expect(result).toBeDefined();
+            expect((result as CloudFrontResponseBody).status).toBeUndefined();
         });
 
         test("handler with / endpoint with basic auth", async () => {
