@@ -4,18 +4,18 @@ import { CloudFrontRequest, CloudFrontResultResponse } from "aws-lambda";
 import { JwtRsaVerifier } from "aws-jwt-verify";
 import { getBearerToken } from "./utils/general";
 
-import config from "./config";
+import { config } from "./config";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let verifier: any;
 
 // initialise our JWT validator
-if (config().AUTH_ENABLED) {
+if (config.AUTH_ENABLED) {
     verifier = JwtRsaVerifier.create({
-        issuer: config().ISSUER,
-        audience: config().AUDIENCE,
-        jwksUri: config().JWKS_URI,
-        graceSeconds: config().AUTH_GRACE,
+        issuer: config.ISSUER,
+        audience: config.AUDIENCE,
+        jwksUri: config.JWKS_URI,
+        graceSeconds: config.AUTH_GRACE,
     });
 }
 

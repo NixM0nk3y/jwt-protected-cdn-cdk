@@ -1,5 +1,4 @@
 import { CloudFrontResultResponse } from "aws-lambda";
-import { serialize } from "cookie";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function unAuthorizedResponse(
