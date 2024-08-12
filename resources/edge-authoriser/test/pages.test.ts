@@ -1,4 +1,4 @@
-import { errorResponse, versionResponse, unAuthorizedResponse, oidcRedirectResponse } from "../src/pages";
+import { errorResponse, versionResponse, unAuthorizedResponse } from "../src/pages";
 
 describe("Page Tests", () => {
     describe("errorResponse Page", () => {
@@ -29,14 +29,6 @@ describe("Page Tests", () => {
             expect(result).toBeDefined();
             expect(result.status).toBe("401");
             expect(result.body).toContain("foo");
-        });
-    });
-
-    describe("oidcRedirectResponse Page", () => {
-        test("default error page", async () => {
-            const result = await oidcRedirectResponse();
-            expect(result).toBeDefined();
-            expect(result.status).toBe("301");
         });
     });
 });

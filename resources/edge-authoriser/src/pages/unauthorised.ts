@@ -37,22 +37,6 @@ export function unAuthorizedResponse(
                     value: "text/html",
                 },
             ],
-            "Set-Cookie": [
-                {
-                    key: "Set-Cookie",
-                    value: serialize("TOKEN", "", {
-                        path: "/",
-                        expires: new Date(1970, 1, 1, 0, 0, 0, 0),
-                    }),
-                },
-                {
-                    key: "Set-Cookie",
-                    value: serialize("NONCE", "", {
-                        path: "/",
-                        expires: new Date(1970, 1, 1, 0, 0, 0, 0),
-                    }),
-                },
-            ],
         },
         body: body,
     };
