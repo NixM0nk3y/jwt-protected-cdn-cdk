@@ -26,4 +26,4 @@ const getConfig = (): Schema => {
     });
 };
 
-export default getConfig;
+export const config = getConfig();

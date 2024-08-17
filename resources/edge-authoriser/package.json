@@ -39,11 +39,14 @@
         "eslint-config-prettier": "^9.0.0",
         "eslint-plugin-prettier": "5.0.0",
         "jest": "29.7.0",
+        "nock": "13.5.4",
+        "path-to-regexp": "7.1.0",
         "prettier": "^3.0.0",
         "ts-jest": "29.2.4",
         "typedoc": "0.26.5",
-        "nock": "13.5.4",
         "typescript": "5.5.4"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@middy/util": "5.4.6"
+    }
 }
