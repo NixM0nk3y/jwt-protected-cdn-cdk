@@ -50,10 +50,10 @@ export class ProtectedCDN extends Construct {
             cors: [
                 {
                     allowedMethods: [HttpMethods.GET, HttpMethods.HEAD],
-                    allowedOrigins: ["*"], // can be much better
-                    allowedHeaders: ["*"], // can be much better
+                    allowedOrigins: ["*"],
+                    allowedHeaders: ["authorization"],
                     exposedHeaders: ["Access-Control-Allow-Origin"],
-                    maxAge: 300,
+                    maxAge: 3600,
                 },
             ],
         });
